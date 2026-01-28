@@ -75,21 +75,21 @@ import {
               <span class="card-icon">🪑</span>
               <div class="card-content">
                 <span class="card-label">Tu Mesa</span>
-                <span class="card-value">{{ order.tableNumber }}</span>
+                <span class="card-value">{{ order?.tableNumber }}</span>
               </div>
             </div>
             <div class="info-card">
               <span class="card-icon">🧾</span>
               <div class="card-content">
                 <span class="card-label">Pedido</span>
-                <span class="card-value">#{{ order.orderNumber }}</span>
+                <span class="card-value">#{{ order?.orderNumber }}</span>
               </div>
             </div>
             <div class="info-card">
               <span class="card-icon">🕐</span>
               <div class="card-content">
                 <span class="card-label">Hora</span>
-                <span class="card-value">{{ formatTime(order.createdAt) }}</span>
+                <span class="card-value">{{ order?.createdAt ? formatTime(order.createdAt) : '--:--' }}</span>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ import {
           <div class="order-details">
             <h3>Detalle del Pedido</h3>
             <div class="order-items">
-              <div class="order-item" *ngFor="let item of order.items">
+              <div class="order-item" *ngFor="let item of order?.items || []">
                 <div class="item-info">
                   <span class="item-qty">{{ item.quantity }}x</span>
                   <span class="item-name">{{ item.name }}</span>
