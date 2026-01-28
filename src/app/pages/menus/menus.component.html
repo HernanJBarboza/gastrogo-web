@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>📋 Menús Digitales</h1>
+  <p>Explora los menús de los mejores restaurantes</p>
+</div>
+
+<div class="container">
+  <div class="menus-grid">
+    @for (menu of menus; track menu.id) {
+      <div class="menu-card" (click)="verMenu(menu)">
+        <div class="menu-logo">{{ menu.logo }}</div>
+        <h3>{{ menu.restaurante }}</h3>
+        <span class="menu-tipo">{{ menu.tipo }}</span>
+        <p class="menu-items-count">{{ menu.items.length }} platos</p>
+        <button class="ver-menu-btn">Ver Menú</button>
+      </div>
+    }
+  </div>
+</div>
+
+@if (menuSeleccionado) {
+  <div class="modal-overlay" (click)="cerrarMenu()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="cerrarMenu()">✕</button>
+      <div class="modal-header">
+        <span class="modal-logo">{{ menuSeleccionado.logo }}</span>
+        <h2>{{ menuSeleccionado.restaurante }}</h2>
+        <span class="modal-tipo">{{ menuSeleccionado.tipo }}</span>
+      </div>
+      <div class="modal-body">
+        <h3>Carta</h3>
+        @for (item of menuSeleccionado.items; track item.nombre) {
+          <div class="menu-item">
+            <div class="item-info">
+              <h4>{{ item.nombre }}</h4>
+              <p>{{ item.descripcion }}</p>
+            </div>
+            <span class="item-precio">${{ item.precio.toFixed(2) }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

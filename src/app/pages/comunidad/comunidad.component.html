@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1>👨‍🍳 Comunidad</h1>
+  <p>Comparte tus experiencias gastronómicas</p>
+</div>
+
+<div class="container">
+  <div class="nuevo-post">
+    <div class="post-input">
+      <span class="user-avatar">😊</span>
+      <textarea 
+        [(ngModel)]="nuevoPost" 
+        placeholder="¿Qué cocinaste hoy?"
+        rows="3">
+      </textarea>
+    </div>
+    <button class="publicar-btn" (click)="publicar()" [disabled]="!nuevoPost.trim()">
+      Publicar
+    </button>
+  </div>
+
+  <div class="feed">
+    @for (post of posts; track post.id) {
+      <div class="post-card">
+        <div class="post-header">
+          <span class="avatar">{{ post.avatar }}</span>
+          <div class="user-info">
+            <strong>{{ post.usuario }}</strong>
+            <span class="fecha">{{ post.fecha }}</span>
+          </div>
+        </div>
+        <p class="post-contenido">{{ post.contenido }}</p>
+        @if (post.imagen) {
+          <div class="post-imagen">{{ post.imagen }}</div>
+        }
+        <div class="post-actions">
+          <button 
+            class="action-btn" 
+            [class.liked]="post.liked"
+            (click)="darLike(post)">
+            {{ post.liked ? '❤️' : '🤍' }} {{ post.likes }}
+          </button>
+          <button class="action-btn">
+            💬 {{ post.comentarios }}
+          </button>
+          <button class="action-btn">
+            🔗 Compartir
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1>🍴 GastroGo</h1>
+    <p class="subtitle">Tu plataforma gastronómica completa</p>
+    <p class="description">Descubre recetas, compra ingredientes y comparte experiencias culinarias</p>
+    <div class="cta-buttons">
+      <a routerLink="/recetas" class="btn btn-primary">Ver Recetas</a>
+      <a routerLink="/productos" class="btn btn-secondary">Comprar Productos</a>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <h2>¿Qué puedes hacer?</h2>
+  <div class="features-grid">
+    @for (feature of features; track feature.title) {
+      <a [routerLink]="feature.link" class="feature-card">
+        <span class="feature-icon">{{ feature.icon }}</span>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </a>
+    }
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat">
+    <span class="stat-number">500+</span>
+    <span class="stat-label">Recetas</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">1000+</span>
+    <span class="stat-label">Productos</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">50+</span>
+    <span class="stat-label">Restaurantes</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">10K+</span>
+    <span class="stat-label">Usuarios</span>
+  </div>
+</section>

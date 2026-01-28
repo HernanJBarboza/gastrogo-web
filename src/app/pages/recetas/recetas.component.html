@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h1>🍳 Recetas</h1>
+  <p>Descubre recetas increíbles de chefs profesionales</p>
+</div>
+
+<div class="container">
+  <div class="filtros">
+    @for (cat of categorias; track cat) {
+      <button 
+        class="filtro-btn" 
+        [class.active]="categoriaActiva === cat"
+        (click)="filtrarPorCategoria(cat)">
+        {{ cat }}
+      </button>
+    }
+  </div>
+
+  <div class="recetas-grid">
+    @for (receta of recetasFiltradas; track receta.id) {
+      <div class="receta-card">
+        <div class="receta-imagen">{{ receta.imagen }}</div>
+        <div class="receta-info">
+          <h3>{{ receta.nombre }}</h3>
+          <div class="receta-meta">
+            <span>⏱️ {{ receta.tiempo }}</span>
+            <span>📊 {{ receta.dificultad }}</span>
+          </div>
+          <span class="receta-categoria">{{ receta.categoria }}</span>
+        </div>
+        <button class="ver-receta-btn">Ver Receta</button>
+      </div>
+    }
+  </div>
+
+  @if (recetasFiltradas.length === 0) {
+    <div class="no-resultados">
+      <p>No hay recetas en esta categoría</p>
+    </div>
+  }
+</div>

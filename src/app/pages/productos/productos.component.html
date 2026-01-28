@@ -1,0 +1,56 @@
+<div class="page-header">
+  <h1>🛒 Productos</h1>
+  <p>Ingredientes frescos y de calidad para tus recetas</p>
+</div>
+
+<div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Categorías</h3>
+      @for (cat of categorias; track cat) {
+        <button 
+          class="cat-btn" 
+          [class.active]="categoriaActiva === cat"
+          (click)="filtrarPorCategoria(cat)">
+          {{ cat }}
+        </button>
+      }
+    </aside>
+
+    <main class="productos-area">
+      <div class="productos-grid">
+        @for (producto of productosFiltrados; track producto.id) {
+          <div class="producto-card">
+            <div class="producto-imagen">{{ producto.imagen }}</div>
+            <div class="producto-info">
+              <h3>{{ producto.nombre }}</h3>
+              <p class="precio">${{ producto.precio.toFixed(2) }} / {{ producto.unidad }}</p>
+              <span class="categoria-tag">{{ producto.categoria }}</span>
+            </div>
+            <button class="agregar-btn" (click)="agregarAlCarrito(producto)">
+              🛒 Agregar
+            </button>
+          </div>
+        }
+      </div>
+    </main>
+
+    @if (carrito.length > 0) {
+      <aside class="carrito">
+        <h3>🛒 Carrito ({{ cantidadCarrito }})</h3>
+        <div class="carrito-items">
+          @for (item of carrito; track item.producto.id) {
+            <div class="carrito-item">
+              <span>{{ item.producto.imagen }} {{ item.producto.nombre }}</span>
+              <span>x{{ item.cantidad }}</span>
+            </div>
+          }
+        </div>
+        <div class="carrito-total">
+          <strong>Total: ${{ totalCarrito.toFixed(2) }}</strong>
+        </div>
+        <button class="checkout-btn">Finalizar Compra</button>
+      </aside>
+    }
+  </div>
+</div>
