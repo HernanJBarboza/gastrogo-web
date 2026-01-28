@@ -1,0 +1,145 @@
+<div class="menu-page">
+  <!-- Header -->
+  <header class="menu-header">
+    <div class="header-content">
+      <div class="restaurant-info">
+        <h1 class="restaurant-name">{{ restaurantName }}</h1>
+        @if (tableNumber) {
+          <span class="table-badge">Mesa {{ tableNumber }}</span>
+        }
+      </div>
+      
+      <button 
+        class="cart-button"
+        (click)="toggleCart()"
+        [attr.aria-label]="'Carrito con ' + cart.totalItems + ' items'"
+      >
+        <span class="cart-icon">🛒</span>
+        @if (cart.totalItems > 0) {
+          <span class="cart-badge">{{ cart.totalItems }}</span>
+        }
+      </button>
+    </div>
+    
+    <!-- Categories -->
+    <app-category-tabs
+      [categories]="categories"
+      [selectedId]="selectedCategory"
+      [showCounts]="true"
+      (categorySelect)="filterByCategory($event)"
+    />
+  </header>
+
+  <!-- Dishes Grid -->
+  <main class="menu-content">
+    <div class="dishes-grid">
+      @for (dish of filteredDishes; track dish.id) {
+        <app-dish-card
+          [dish]="dish"
+          (add)="quickAddToCart($event)"
+          (details)="openDishModal($event)"
+          (cardClick)="openDishModal($event)"
+        />
+      } @empty {
+        <div class="empty-state">
+          <span class="empty-icon">🍽️</span>
+          <p>No hay platos en esta categoría</p>
+        </div>
+      }
+    </div>
+  </main>
+
+  <!-- Floating Cart Button (mobile) -->
+  @if (cart.totalItems > 0) {
+    <div class="floating-cart">
+      <button class="view-cart-btn" (click)="toggleCart()">
+        <span class="cart-summary">
+          <span class="cart-count">{{ cart.totalItems }} items</span>
+          <span class="cart-total">{{ formatPrice(cart.totalPrice) }}</span>
+        </span>
+        <span class="view-text">Ver pedido</span>
+      </button>
+    </div>
+  }
+
+  <!-- Cart Drawer -->
+  @if (isCartOpen) {
+    <div class="cart-overlay" (click)="toggleCart()">
+      <aside class="cart-drawer" (click)="$event.stopPropagation()">
+        <header class="cart-header">
+          <h2>Tu pedido</h2>
+          <button class="close-cart" (click)="toggleCart()" aria-label="Cerrar carrito">✕</button>
+        </header>
+        
+        <div class="cart-items">
+          @for (item of cart.items; track $index) {
+            <div class="cart-item">
+              <div class="item-info">
+                <span class="item-quantity">{{ item.quantity }}x</span>
+                <div class="item-details">
+                  <span class="item-name">{{ item.dish.name }}</span>
+                  @if (item.selectedModifiers.length > 0) {
+                    <span class="item-mods">
+                      @for (mod of item.selectedModifiers; track mod.modifierId) {
+                        {{ mod.option }}@if (!$last) {, }
+                      }
+                    </span>
+                  }
+                  @if (item.notes) {
+                    <span class="item-notes">📝 {{ item.notes }}</span>
+                  }
+                </div>
+              </div>
+              <div class="item-actions">
+                <span class="item-price">{{ formatPrice(item.totalPrice) }}</span>
+                <button 
+                  class="remove-btn"
+                  (click)="removeFromCart($index)"
+                  aria-label="Eliminar item"
+                >🗑️</button>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-cart">
+              <span class="empty-icon">🛒</span>
+              <p>Tu carrito está vacío</p>
+              <p class="empty-hint">Agrega platos desde el menú</p>
+            </div>
+          }
+        </div>
+        
+        @if (cart.items.length > 0) {
+          <footer class="cart-footer">
+            <div class="cart-totals">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span>{{ formatPrice(cart.totalPrice) }}</span>
+              </div>
+              <div class="total-row final">
+                <span>Total</span>
+                <span>{{ formatPrice(cart.totalPrice) }}</span>
+              </div>
+            </div>
+            
+            <app-button
+              variant="primary"
+              size="lg"
+              [fullWidth]="true"
+              (buttonClick)="confirmOrder()"
+            >
+              Confirmar pedido
+            </app-button>
+          </footer>
+        }
+      </aside>
+    </div>
+  }
+
+  <!-- Dish Detail Modal -->
+  <app-dish-modal
+    [dish]="selectedDish"
+    [isOpen]="isModalOpen"
+    (closeModal)="closeDishModal()"
+    (addItem)="addToCart($event)"
+  />
+</div>

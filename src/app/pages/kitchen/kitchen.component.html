@@ -1,0 +1,140 @@
+<div class="kds-page">
+  <!-- Header -->
+  <header class="kds-header">
+    <div class="header-left">
+      <h1 class="logo">🍳 GastroGO <span>KDS</span></h1>
+      <span class="time">{{ getCurrentTime() }}</span>
+    </div>
+    
+    <div class="header-stats">
+      <div class="stat" [class.active]="filterStatus === 'created'" (click)="setFilter('created')">
+        <span class="stat-value">{{ pendingCount }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+      <div class="stat" [class.active]="filterStatus === 'preparing'" (click)="setFilter('preparing')">
+        <span class="stat-value">{{ preparingCount }}</span>
+        <span class="stat-label">En preparación</span>
+      </div>
+      <div class="stat" [class.active]="filterStatus === 'ready'" (click)="setFilter('ready')">
+        <span class="stat-value">{{ readyCount }}</span>
+        <span class="stat-label">Listos</span>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        class="action-btn"
+        [class.active]="filterStatus === 'all'"
+        (click)="setFilter('all')"
+      >
+        Todos
+      </button>
+      <button 
+        class="sound-btn"
+        [class.muted]="!soundEnabled"
+        (click)="toggleSound()"
+        [attr.aria-label]="soundEnabled ? 'Silenciar' : 'Activar sonido'"
+      >
+        {{ soundEnabled ? '🔔' : '🔕' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Orders Grid -->
+  <main class="kds-content">
+    <!-- Column View -->
+    <div class="orders-columns">
+      <!-- New Orders -->
+      <section class="order-column">
+        <h2 class="column-header status-created">
+          <span class="status-icon">📥</span>
+          Nuevos
+          <span class="count">{{ ordersByStatus['created'].length }}</span>
+        </h2>
+        <div class="column-content">
+          @for (order of ordersByStatus['created']; track order.id) {
+            <app-order-card
+              [order]="order"
+              [showCheckmarks]="false"
+              (statusChange)="onStatusChange($event)"
+              (print)="onPrint($event)"
+            />
+          } @empty {
+            <div class="empty-column">
+              <span>Sin pedidos nuevos</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Confirmed -->
+      <section class="order-column">
+        <h2 class="column-header status-confirmed">
+          <span class="status-icon">✓</span>
+          Confirmados
+          <span class="count">{{ ordersByStatus['confirmed'].length }}</span>
+        </h2>
+        <div class="column-content">
+          @for (order of ordersByStatus['confirmed']; track order.id) {
+            <app-order-card
+              [order]="order"
+              [showCheckmarks]="false"
+              (statusChange)="onStatusChange($event)"
+              (print)="onPrint($event)"
+            />
+          } @empty {
+            <div class="empty-column">
+              <span>Sin pedidos confirmados</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Preparing -->
+      <section class="order-column">
+        <h2 class="column-header status-preparing">
+          <span class="status-icon">🍳</span>
+          En Preparación
+          <span class="count">{{ ordersByStatus['preparing'].length }}</span>
+        </h2>
+        <div class="column-content">
+          @for (order of ordersByStatus['preparing']; track order.id) {
+            <app-order-card
+              [order]="order"
+              [showCheckmarks]="true"
+              (statusChange)="onStatusChange($event)"
+              (print)="onPrint($event)"
+            />
+          } @empty {
+            <div class="empty-column">
+              <span>Sin pedidos en preparación</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Ready -->
+      <section class="order-column">
+        <h2 class="column-header status-ready">
+          <span class="status-icon">🔔</span>
+          Listos
+          <span class="count">{{ ordersByStatus['ready'].length }}</span>
+        </h2>
+        <div class="column-content">
+          @for (order of ordersByStatus['ready']; track order.id) {
+            <app-order-card
+              [order]="order"
+              [showCheckmarks]="false"
+              (statusChange)="onStatusChange($event)"
+              (print)="onPrint($event)"
+            />
+          } @empty {
+            <div class="empty-column">
+              <span>Sin pedidos listos</span>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
