@@ -26,3 +26,18 @@ export type { CartItem } from './components/dish-modal/dish-modal.component';
 // Componentes KDS (Kitchen Display System)
 export { OrderCardComponent } from './components/order-card/order-card.component';
 export type { Order, OrderItem, OrderStatus } from './components/order-card/order-card.component';
+
+// Componente de Tracking de Pedidos
+export { OrderTrackerComponent } from './components/order-tracker/order-tracker.component';
+export type { 
+  TrackingStatus, 
+  TrackingStep, 
+  TrackedOrder 
+} from './components/order-tracker/order-tracker.component';
+
+// Digital Signage (Pantallas TV)
+export { DigitalSignageComponent } from './components/digital-signage/digital-signage.component';
+export type { 
+  DisplaySlide, 
+  DisplayConfig 
+} from './components/digital-signage/digital-signage.component';
